@@ -3,21 +3,20 @@
 const fs = require('fs');
 // const os = require('os');
 const getHeaders = require(__dirname + '/lib/bitmapHeaders');
+const getArgs = require(__dirname + '/lib/getArgs');
 
-fs.readFile('test/resources/test.BMP', (err, data) => {
+const options = getArgs(process.argv);
+
+fs.readFile(__dirname + '/test/' + options.file, (err, data) => {
   if (err) return console.log(err);
 
-  const transformation = {
-    r: 5,
-    g: 6,
-    b: -30
-  };
-  const headers = getHeaders(data, transformation);
+  const headers = getHeaders(data);
   // return error if not BM type bitmap
   if (headers.type !== 'BM') return console.log('Not a BM type BMP');
+  if (!options) return console.log('Invalid arguments');
 
   console.log(headers);
-  const transformed = bruteTransform(data, headers, transformation);
+  const transformed = bruteTransform(data, headers, options.transform);
   fs.writeFile('output.bmp', transformed, () => {});
 });
 
@@ -28,10 +27,24 @@ function bruteTransform(image, headers, transform) {
   // transform pixels
   for (let i = headers.pixelOffset; i < newImage.length; i += 3) {
     // keep transforms out of function calls to avoid perfromance hit
+
     if (typeof transform === 'object') {
-      newImage[i] += transform.r;
-      newImage[i + 1] += transform.g;
-      newImage[i + 2] += transform.b;
+      let newColors = {
+        r: transform.r + newImage[i],
+        g: transform.g + newImage[i + 1],
+        b: transform.b + newImage[i + 2]
+      };
+
+      for (var color in newColors) {
+        if (newColors.hasOwnProperty(color)) {
+          if (newColors[color] > 255) newColors[color] = 255;
+          if (newColors[color] < 0) newColors[color] = 0;
+        }
+      }
+
+      newImage[i] = newColors.r;
+      newImage[i + 1] = newColors.g;
+      newImage[i + 2] = newColors.b;
     }
 
     if (transform === 'invert') {
@@ -45,5 +58,6 @@ function bruteTransform(image, headers, transform) {
       if (newImage[i2] < 0) newImage[i2] = 0;
     }
   }
+
   return newImage;
 }

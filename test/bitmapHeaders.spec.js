@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const fs = require('fs');
 const bitmapHeaders = require(__dirname + '/../lib/bitmapHeaders');
 
-describe('bitmapHeaders modules', () => {
+describe('bitmapHeaders module', () => {
   before(done => {
     fs.readFile(__dirname + '/resources/test.BMP', (err, data) => {
       if (err) return console.log(err);
@@ -10,7 +10,7 @@ describe('bitmapHeaders modules', () => {
       done();
     });
   });
-  it('returns a valid header', () => {
+  it('should returns a valid header', () => {
     const headers = this.headers;
 
     expect(headers).to.have.property('type', 'BM');
