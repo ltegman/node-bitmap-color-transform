@@ -10,7 +10,8 @@ describe('bitmapHeaders module', () => {
       done();
     });
   });
-  it('should returns a valid header', () => {
+
+  it('should return a valid header', () => {
     const headers = this.headers;
 
     expect(headers).to.have.property('type', 'BM');
