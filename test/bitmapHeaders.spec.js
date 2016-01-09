@@ -4,7 +4,7 @@ const bitmapHeaders = require(__dirname + '/../lib/bitmapHeaders');
 
 describe('bitmapHeaders module', () => {
   before(done => {
-    fs.readFile(__dirname + '/resources/test.BMP', (err, data) => {
+    fs.readFile(__dirname + '/resources/test.bmp', (err, data) => {
       if (err) return console.log(err);
       this.headers = bitmapHeaders(data);
       done();

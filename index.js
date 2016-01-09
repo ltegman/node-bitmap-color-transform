@@ -36,20 +36,18 @@ fs.readFile(__dirname + '/' + options.file, (err, data) => {
   fs.writeFile('output.bmp', transformed, () => {});
 });
 
-function paletteTransform(image, headers, transform) {
-  // avoid mutating passed in buffer
-  const newImage = image.slice(0);
-
-  // transform palette
-  for (let i = headers.endOfHeaders; i < headers.pixelOffset; i += 3) {
-    // keep transforms out of function calls to avoid perfromance hit
+function transformRange(image, transform, start, end) {
+  // this method has side effects -- it mutates the image buffer everywhere it
+  // is referenced
+  for (let i = start; i < end; i += 3) {
+    // keep transforms out of function calls to avoid performance hit
 
     // rgb transform
     if (typeof transform === 'object') {
       let newColors = {
-        r: transform.r + newImage[i],
-        g: transform.g + newImage[i + 1],
-        b: transform.b + newImage[i + 2]
+        r: transform.r + image[i],
+        g: transform.g + image[i + 1],
+        b: transform.b + image[i + 2]
       };
 
       for (var color in newColors) {
@@ -59,18 +57,27 @@ function paletteTransform(image, headers, transform) {
         }
       }
 
-      newImage[i] = newColors.r;
-      newImage[i + 1] = newColors.g;
-      newImage[i + 2] = newColors.b;
+      image[i] = newColors.r;
+      image[i + 1] = newColors.g;
+      image[i + 2] = newColors.b;
     }
 
     // color inversion transform
     if (transform === 'invert') {
-      newImage[i] = 255 - newImage[i];
-      newImage[i + 1] = 255 - newImage[i + 1];
-      newImage[i + 2] = 255 - newImage[i + 2];
+      image[i] = 255 - image[i];
+      image[i + 1] = 255 - image[i + 1];
+      image[i + 2] = 255 - image[i + 2];
     }
   }
+}
+
+function paletteTransform(image, headers, transform) {
+  // avoid mutating passed in buffer
+  const newImage = image.slice(0);
+
+  // transform palette
+  transformRange(newImage, transform, headers.endOfHeaders,
+    headers.pixelOffset);
 
   return newImage;
 
@@ -85,36 +92,7 @@ function bruteTransform(image, headers, transform) {
   for (let row = 0; row < headers.height; row++) {
     let colStart = headers.pixelOffset + (row * headers.rowSize);
     let colEnd = colStart + headers.rowSize;
-    for (let col = colStart; col < colEnd; col += 3) {
-      // keep transforms out of function calls to avoid perfromance hit
-
-      // rgb transform
-      if (typeof transform === 'object') {
-        let newColors = {
-          r: transform.r + newImage[col],
-          g: transform.g + newImage[col + 1],
-          b: transform.b + newImage[col + 2]
-        };
-
-        for (var color in newColors) {
-          if (newColors.hasOwnProperty(color)) {
-            if (newColors[color] > 255) newColors[color] = 255;
-            if (newColors[color] < 0) newColors[color] = 0;
-          }
-        }
-
-        newImage[col] = newColors.r;
-        newImage[col + 1] = newColors.g;
-        newImage[col + 2] = newColors.b;
-      }
-
-      // color inversion transform
-      if (transform === 'invert') {
-        newImage[col] = 255 - newImage[col];
-        newImage[col + 1] = 255 - newImage[col + 1];
-        newImage[col + 2] = 255 - newImage[col + 2];
-      }
-    }
+    transformRange(image, transform, colStart, colEnd);
   }
 
   return newImage;
