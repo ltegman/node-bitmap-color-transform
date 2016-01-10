@@ -6,6 +6,7 @@ const path = require('path');
 const bitmapTransformer = require(path.join(__dirname,
   '../lib/bitmapTransformer'));
 const bitmapHeaders = require(path.join(__dirname, '../lib/bitmapHeaders'));
+
 // helper method to pull colors for testing
 function getRGB(image, offset) {
   return {

@@ -4,8 +4,6 @@ const expect = require('chai').expect;
 const path = require('path');
 const getArgs = require(path.join(__dirname, '/../lib/getArgs'));
 
-/* eslint-disable no-unused-expressions */
-
 describe('getArgs module', () => {
   it('should parse word arguments', () => {
     const testArgs = ['node', 'script/location/script.js', '-t=invert',

@@ -1,5 +1,5 @@
 {
-  "name": "node-bitmap-color-transform",
+  "name": "bmp-transform",
   "version": "0.0.1",
   "description": "Performs color transformations on bitmap images using node buffers.",
   "main": "index.js",
@@ -11,7 +11,7 @@
     "url": "https://github.com/ltegman/node-bitmap-color-transform.git"
   },
   "keywords": [
-    "bitmaps"
+    "bitmap"
   ],
   "engines": {
     "node": ">=4.2.0"

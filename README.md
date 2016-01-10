@@ -18,6 +18,8 @@ Perform a color inversion on `toinvert.bmp`:
 bmptransform toinvert.bmp -t=invert -o=inverted.bmp
 ```
 
+If no output location is specified it will write file named `transformed.bmp` to your current working directory.
+
 ## API
 
 #### bitmapTransformer(buffer, transform):
@@ -37,6 +39,10 @@ fs.readFile('test.bmp', (err, data) => {
   fs.writeFile('output.bmp', transformed, err => return console.log(err));
 });
 ```
+
+## Known issues
+
+Bitmaps with color depth other than 24 bit or alpha channels are not correctly processed.
 
 ## License
 
