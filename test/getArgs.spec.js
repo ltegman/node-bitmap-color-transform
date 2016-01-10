@@ -1,5 +1,8 @@
+'use strict';
+
 const expect = require('chai').expect;
-const getArgs = require(__dirname + '/../lib/getArgs');
+const path = require('path');
+const getArgs = require(path.join(__dirname, '/../lib/getArgs'));
 
 /* eslint-disable no-unused-expressions */
 

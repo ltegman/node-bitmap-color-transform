@@ -1,10 +1,13 @@
+'use strict';
+
 const expect = require('chai').expect;
 const fs = require('fs');
-const bitmapHeaders = require(__dirname + '/../lib/bitmapHeaders');
+const path = require('path');
+const bitmapHeaders = require(path.join(__dirname, '/../lib/bitmapHeaders'));
 
 describe('bitmapHeaders module', () => {
   before(done => {
-    fs.readFile(__dirname + '/resources/test.bmp', (err, data) => {
+    fs.readFile(path.join(__dirname, '/resources/test.bmp'), (err, data) => {
       if (err) return console.log(err);
       this.headers = bitmapHeaders(data);
       done();
