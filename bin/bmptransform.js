@@ -10,7 +10,13 @@ const bitmapTransformer = require(path.join(__dirname,
   '../lib/bitmapTransformer'));
 
 const options = getArgs(process.argv);
-fs.readFile(path.join(process.cwd(), options.file), (err, data) => {
+const output = options.output || 'transformed.bmp';
+
+if (!options.file || !options.transform) {
+  return console.log('Must pass a valid .bmp file and transform');
+}
+
+fs.readFile(path.resolve(process.cwd(), options.file), (err, data) => {
   if (err) return console.log(err);
 
   if (!options) {
@@ -23,5 +29,5 @@ fs.readFile(path.join(process.cwd(), options.file), (err, data) => {
 
   console.log(headers);
 
-  fs.writeFile('output.bmp', transformed, () => {});
+  fs.writeFile(path.resolve(process.cwd(), output), transformed, () => {});
 });

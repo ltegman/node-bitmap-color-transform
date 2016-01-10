@@ -73,4 +73,33 @@ describe('bitmapTransformer module', () => {
       });
     });
   });
+
+  describe('BA type transform', () => {
+    beforeEach((done) => {
+      fs.readFile(path.join(__dirname, 'resources/spade.bmp'),
+        (err, data) => {
+          if (err) console.log(err);
+          this.image = data;
+          this.headers = bitmapHeaders(data);
+          done();
+        });
+    });
+    it('should perform an rgb transform', () => {
+      const transformed = bitmapTransformer(this.image, {r: 20, g: 20, b: 20});
+      const beforeRGB = getRGB(this.image, this.headers.endOfHeaders);
+      const afterRGB = getRGB(transformed, this.headers.endOfHeaders);
+      Object.keys(afterRGB).forEach(color => {
+        assert(afterRGB[color] === beforeRGB[color] + 20 ||
+          afterRGB[color] === 255);
+      });
+    });
+    it('should perform a color inversion', () => {
+      const transformed = bitmapTransformer(this.image, 'invert');
+      const beforeRGB = getRGB(this.image, this.headers.endOfHeaders);
+      const afterRGB = getRGB(transformed, this.headers.endOfHeaders);
+      Object.keys(afterRGB).forEach(color => {
+        assert(afterRGB[color] === 255 - beforeRGB[color]);
+      });
+    });
+  });
 });

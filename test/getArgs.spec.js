@@ -44,11 +44,4 @@ describe('getArgs module', () => {
       }
     });
   });
-
-  it('should return undefined for invalid args', () => {
-    const testArgs = ['node', 'script/location/script.js', 'transform',
-      'test.bmp'];
-
-    expect(getArgs(testArgs)).to.be.undefined;
-  });
 });
