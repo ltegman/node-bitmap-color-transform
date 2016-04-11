@@ -28,7 +28,11 @@ describe('bitmapTransformer module', () => {
         });
     });
     it('should perform an rgb transform', () => {
-      const transformed = bitmapTransformer(this.image, {r: 20, g: 20, b: 20});
+      const transformed = bitmapTransformer(this.image, {
+        r: 20,
+        g: 20,
+        b: 20
+      });
       const beforeRGB = getRGB(this.image, this.headers.endOfHeaders);
       const afterRGB = getRGB(transformed, this.headers.endOfHeaders);
       Object.keys(afterRGB).forEach(color => {
@@ -57,7 +61,11 @@ describe('bitmapTransformer module', () => {
         });
     });
     it('should perform an rgb transform', () => {
-      const transformed = bitmapTransformer(this.image, {r: 20, g: 20, b: 20});
+      const transformed = bitmapTransformer(this.image, {
+        r: 20,
+        g: 20,
+        b: 20
+      });
       const beforeRGB = getRGB(this.image, this.headers.pixelOffset);
       const afterRGB = getRGB(transformed, this.headers.pixelOffset);
       Object.keys(afterRGB).forEach(color => {
@@ -86,7 +94,11 @@ describe('bitmapTransformer module', () => {
         });
     });
     it('should perform an rgb transform', () => {
-      const transformed = bitmapTransformer(this.image, {r: 20, g: 20, b: 20});
+      const transformed = bitmapTransformer(this.image, {
+        r: 20,
+        g: 20,
+        b: 20
+      });
       const beforeRGB = getRGB(this.image, this.headers.endOfHeaders);
       const afterRGB = getRGB(transformed, this.headers.endOfHeaders);
       Object.keys(afterRGB).forEach(color => {
